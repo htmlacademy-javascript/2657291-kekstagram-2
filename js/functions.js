@@ -1,5 +1,5 @@
 function checkingSringLength(string, number) {
-  return (string.length <= number) ? console.log('Условие выполняется ТЕРН ОП') : console.log('Условие не выполняется, строка больше указанной длинны ТЕРН ОП');
+  return (string.length <= number) ? 'Условие выполняется ТЕРН ОП' : 'Условие не выполняется, строка больше указанной длинны ТЕРН ОП';
 }
 
 checkingSringLength('Четыре', 6);
@@ -11,13 +11,14 @@ function CheckPalindrome(line) {
 
   for (let i = register.length - 1; i >= 0; i--) {
     emptyLine += register[i];
-    console.log(emptyLine);
   }
 
   if (register === emptyLine) {
-    console.log('Это палиндром');
+    // eslint-disable-next-line no-alert
+    alert('Это палиндром');
   } else {
-    console.log(register + ' - Это НЕ палиндром!!!');
+    // eslint-disable-next-line no-alert
+    alert('Это НЕ палиндром!!!');
   }
 }
 
