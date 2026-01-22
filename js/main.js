@@ -40,49 +40,92 @@ const getRandomInteger = (minValue, maxValue) => {
   return Math.floor(result);
 };
 
-//Функция для создания массива из уникальных чисел в указанном диапазоне
-const getUniqueNumber = (minValue, maxValue) => {
-  const numbers = [];
+//Функция сщздания массива уникальных чисел
+const getUniqueRandomNumbers = (count, minValue, maxValue) => {
+  const uniqueNumbers = new Set();
 
-  for (let i = minValue; i <= maxValue; i++) {
-    numbers.push(i);
+  while (uniqueNumbers.size < count) {
+    uniqueNumbers.add(getRandomInteger(minValue, maxValue));
   }
-  return numbers;
+
+  return Array.from(uniqueNumbers);
 };
 
 //Функция для выбора случайного элемента из массива
 const getRandomArrayElement = (array) => array[getRandomInteger(0, array.length - 1)];
 
-//Функция для создания случайного комментария
-const NewComments = () => {
-  const randomId = getRandomInteger(1, 200);
-  const randomAvatar = `img/avatar-${ getRandomInteger(1, 6) }.svg`;
-  const randomMessage = messages[getRandomInteger(0, messages.length - 1)];
-  const randomName = names[getRandomInteger(0, names.length - 1)];
+//Генератор уникальных id
+function createUniqueIdGenerator(min, max) {
+  const usedIds = new Set();
+
+  return function generateUniqueId() {
+    let newId;
+
+    do {
+      newId = getRandomInteger(min, max);
+      // usedIds.has(newId) вернет true, если номер уже есть
+    } while (usedIds.has(newId));
+    usedIds.add(newId);
+
+    return newId;
+  };
+}
+
+// Создаем  уникальные ID для комментариев
+const generateCommentId = createUniqueIdGenerator(1, 1000);
+
+//Функция для создания комментария
+const createComment = () => {
+  const avatarNumber = getRandomInteger(1, 6);
+  const avatarPath = `img/avatar-${avatarNumber}.svg`;
+  const randomMessage = getRandomArrayElement(messages);
+  const randomName = getRandomArrayElement(names);
 
   return {
-    id: randomId,
-    avatar: randomAvatar,
+    id: generateCommentId(),
+    avatar: avatarPath,
     message: randomMessage,
-    name: randomName,
+    name: randomName
   };
 };
 
-//Функция для создания нового объекта описания фотографии
-const createNewObject = () => {
-  const uniqueId = getRandomArrayElement(getUniqueNumber(1,25));
-  const randomUrl = `photos/${ uniqueId }.jpg`;
-  const description = descriptions[0];
-  const randomLikes = (getRandomInteger(15, 200));
+//Функция для создания массива коментариев
+const createComments = () => {
+  const amount = getRandomInteger(0, 30);
+  const commentsList = [];
 
-  return {
-    id: uniqueId,
-    url: randomUrl,
-    description: description,
-    likes: randomLikes,
-    comments: NewComments(),
-  };
+  for (let i = 0; i < amount; i++) {
+    const newComment = createComment();
+    commentsList.push(newComment);
+  }
+
+  return commentsList;
 };
 
-// eslint-disable-next-line no-unused-vars
-const generatedObjects = Array.from({length: 25}, createNewObject);
+//Функция для создание объектов
+const createNewObject = (id) => ({
+  id: id,
+  url: `photos/${ id }.jpg`,
+  description: getRandomArrayElement(descriptions),
+  likes: getRandomInteger(15, 200),
+  comments: createComments(),
+});
+
+//Функция для создания массива уникальных id
+const generateUniquePhotoIds = (min, max) => {
+  const ids = [];
+
+  for (let i = min; i <= max; i++) {
+    ids.push(i);
+  }
+
+  return ids;
+};
+
+// Создание объектов
+const generatedObjects = () => {
+  const uniqueIds = generateUniquePhotoIds(1,25);
+  return uniqueIds.map((currentId) => createNewObject(currentId));
+};
+
+
