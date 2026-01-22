@@ -102,7 +102,7 @@ const createComments = () => {
   return commentsList;
 };
 
-//Функция для создание объектов
+//Функция для создание объектов с коментариями
 const createNewObject = (id) => ({
   id: id,
   url: `photos/${ id }.jpg`,
@@ -111,20 +111,10 @@ const createNewObject = (id) => ({
   comments: createComments(),
 });
 
-//Функция для создания массива уникальных id
-const generateUniquePhotoIds = (min, max) => {
-  const ids = [];
-
-  for (let i = min; i <= max; i++) {
-    ids.push(i);
-  }
-
-  return ids;
-};
-
 // Создание объектов
+// eslint-disable-next-line no-unused-vars
 const generatedObjects = () => {
-  const uniqueIds = generateUniquePhotoIds(1,25);
+  const uniqueIds = getUniqueRandomNumbers(25, 1, 25);
   return uniqueIds.map((currentId) => createNewObject(currentId));
 };
 
