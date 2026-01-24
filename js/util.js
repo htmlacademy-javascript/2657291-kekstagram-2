@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import {messages, names, descriptions} from './data.js';
 
 //Функция для генерации случайного числа из диапазона
