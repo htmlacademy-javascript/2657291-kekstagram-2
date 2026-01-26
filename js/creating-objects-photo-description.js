@@ -59,7 +59,6 @@ const createNewObject = (id) => ({
 });
 
 // Создание объектов
-// eslint-disable-next-line no-unused-vars
 const generatedObjects = () => {
   const uniqueIds = getUniqueRandomNumbers(25, 1, 25);
   return uniqueIds.map((currentId) => createNewObject(currentId));
