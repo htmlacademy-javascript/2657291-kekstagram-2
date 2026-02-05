@@ -20,11 +20,3 @@ mockedPhotos.forEach((photo) => {
 });
 
 container.appendChild(fragment);
-
-/*
-const rendering = (items, makeElement, container) => {
-  const fragment = document.createDocumentFragment();
-  items.forEach((item) => fragment.appendChild(makeElement(item)));
-  container.appendChild(fragment);
-}
-*/
