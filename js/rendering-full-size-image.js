@@ -14,8 +14,12 @@ const closeButtonElement = bigPictureElement.querySelector('.big-picture__cancel
 const picturesContainerElement = document.querySelector('.pictures'); //Контейнер с миниатюрами (Контейнер для изображений от других пользователей)
 
 const photos = generatedObjects();
-console.log(photos);
 
+let shownCommentsCount = 0;
+let currentComments = [];
+const COMMENTS_STEP = 5;
+
+//функция создания элемента с коментарием
 const createCommentElement = (commentObject) => {
   const itemCommentList = document.createElement('li');
   itemCommentList.classList.add('social__comment');
@@ -38,23 +42,45 @@ const createCommentElement = (commentObject) => {
   return itemCommentList;
 };
 
-const renderComments = (comments) => {
-  socialCommentsElement.innerHTML = '';
-  const fragment = document.createDocumentFragment();
-  comments.forEach((item) => {
-    const commentElement = createCommentElement(item);
-    fragment.append(commentElement);
-  });
-  socialCommentsElement.append(fragment);
+const closeBigPicture = () => {
+  bigPictureElement.classList.add('hidden');
+  document.body.classList.remove('modal-open');
+
+  document.removeEventListener('keydown', onDocumentKeydown);
 };
 
-const onDocumentKeydown = (evt) => {
+function onDocumentKeydown (evt) {
   if (evt.key === 'Escape') {
     evt.preventDefault();
     closeBigPicture();
   }
+}
+
+//Функция отрисовки комментариев по 5 шт
+const renderNextComments = () => {
+  const result = currentComments.slice(shownCommentsCount, shownCommentsCount + COMMENTS_STEP);
+  const fragment = document.createDocumentFragment();
+
+  //Создаем элементы и кладем в "ящик"
+  result.forEach((item) => {
+    const commentElement = createCommentElement(item); //Функция создает элемент с коментарием
+    fragment.append(commentElement);
+  });
+
+  socialCommentsElement.append(fragment);
+
+  //Обновляем счетчик на реальное количество добавленных
+  shownCommentsCount += result.length;
+  commentsShownCountElement.textContent = shownCommentsCount;
+
+  if (shownCommentsCount >= currentComments.length) {
+    commentsLoaderElement.classList.add('hidden');
+  } else {
+    commentsLoaderElement.classList.remove('hidden');
+  }
 };
 
+//Функция открытия большого фото
 const openBigPicture = (photoObject) => {
   bigPictureElement.classList.remove('hidden');
   document.body.classList.add('modal-open');
@@ -63,15 +89,21 @@ const openBigPicture = (photoObject) => {
   likesCountElement.textContent = photoObject.likes;
   socialCaptionElement.textContent = photoObject.description;
   commentsTotalCountElement.textContent = photoObject.comments.length;
-  commentsShownCountElement.textContent = photoObject.comments.length;
 
-  renderComments(photoObject.comments);
-  commentCountBlockElement.classList.add('hidden');
-  commentsLoaderElement.classList.add('hidden');
+  //  Задание 8.2 НАЧИНАЕТСЯ ТУТ ---
+  socialCommentsElement.innerHTML = '';
+  currentComments = photoObject.comments; // Запоминаем все комменты этого фото
+  shownCommentsCount = 0; // Сбрасываем счетчик
+
+  commentCountBlockElement.classList.remove('hidden');
+  commentsLoaderElement.classList.remove('hidden');
+
+  renderNextComments();
 
   document.addEventListener('keydown', onDocumentKeydown);
 };
 
+//Функция
 const onPicturesContainerClick = (evt) => {
   const thumbnailElement = evt.target.closest('.picture');
   if (!thumbnailElement) {
@@ -89,12 +121,5 @@ const onPicturesContainerClick = (evt) => {
 };
 
 picturesContainerElement.addEventListener('click', onPicturesContainerClick);
-
-const closeBigPicture = () => {
-  bigPictureElement.classList.add('hidden');
-  document.body.classList.remove('modal-open');
-
-  document.removeEventListener('keydown', onDocumentKeydown);
-};
-
 closeButtonElement.addEventListener('click', closeBigPicture);
+commentsLoaderElement.addEventListener('click', renderNextComments);
