@@ -13,7 +13,7 @@ mockedPhotos.forEach((photo) => {
   const images = thumbnail.querySelector('.picture__img');
   images.src = photo.url;
   images.alt = photo.description;
-  images.dataset.pictureId = photo.id;
+  thumbnail.dataset.pictureId = photo.id;
 
   thumbnail.querySelector('.picture__likes').textContent = photo.likes;
   thumbnail.querySelector('.picture__comments').textContent = photo.comments.length;
@@ -22,4 +22,3 @@ mockedPhotos.forEach((photo) => {
 });
 
 container.appendChild(fragment);
-
