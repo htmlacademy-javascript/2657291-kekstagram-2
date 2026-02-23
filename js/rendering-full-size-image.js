@@ -1,5 +1,3 @@
-import { generatedObjects } from './creating-objects-photo-description.js';
-
 const bigPictureElement = document.querySelector('.big-picture'); //section родитель Полноэкранный показ изображения
 const bigPictureImgElement = document.querySelector('.big-picture__img img'); //img изображение
 const likesCountElement = bigPictureElement.querySelector('.likes-count'); //span с кол-ом лайков
@@ -12,8 +10,6 @@ const commentCountBlockElement = bigPictureElement.querySelector('.social__comme
 const commentsLoaderElement = bigPictureElement.querySelector('.comments-loader'); //button Загрузить еще
 const closeButtonElement = bigPictureElement.querySelector('.big-picture__cancel'); //Крестик - Закрыть
 const picturesContainerElement = document.querySelector('.pictures'); //Контейнер с миниатюрами (Контейнер для изображений от других пользователей)
-
-const photos = generatedObjects();
 
 let shownCommentsCount = 0;
 let currentComments = [];
@@ -103,23 +99,28 @@ const openBigPicture = (photoObject) => {
   document.addEventListener('keydown', onDocumentKeydown);
 };
 
-//Функция
-const onPicturesContainerClick = (evt) => {
-  const thumbnailElement = evt.target.closest('.picture');
-  if (!thumbnailElement) {
-    return;
-  }
+//Функция прослушки при клике запускает функции отрисовки
+const initBigPicture = (data) => {
+  picturesContainerElement.addEventListener('click', (evt) => {
+    const thumbnailElement = evt.target.closest('.picture');
+    if (!thumbnailElement) {
+      return;
+    }
 
-  evt.preventDefault();
+    evt.preventDefault();
 
-  const pictureId = Number(thumbnailElement.dataset.pictureId);
+    const pictureId = Number(thumbnailElement.dataset.pictureId);
 
-  const currentPhoto = photos.find((item) => item.id === pictureId);
-  if (currentPhoto) {
-    openBigPicture(currentPhoto);
-  }
+    // Ищем фото именно в тех данных, которые пришли из main.js
+    const currentPhoto = data.find((item) => item.id === pictureId);
+
+    if (currentPhoto) {
+      openBigPicture(currentPhoto);
+    }
+  });
+
+  closeButtonElement.addEventListener('click', closeBigPicture);
+  commentsLoaderElement.addEventListener('click', renderNextComments);
 };
 
-picturesContainerElement.addEventListener('click', onPicturesContainerClick);
-closeButtonElement.addEventListener('click', closeBigPicture);
-commentsLoaderElement.addEventListener('click', renderNextComments);
+export { initBigPicture };

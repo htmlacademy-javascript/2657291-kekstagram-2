@@ -1,24 +1,24 @@
-import { generatedObjects } from './creating-objects-photo-description.js';
-
 const template = document.querySelector('#picture').content.querySelector('.picture');
-
-const mockedPhotos = generatedObjects();
 const container = document.querySelector('.pictures');
 
-const fragment = document.createDocumentFragment();
+const renderThumbnails = (photos) => {
+  const fragment = document.createDocumentFragment();
 
-mockedPhotos.forEach((photo) => {
-  const thumbnail = template.cloneNode(true);
+  photos.forEach((photo) => {
+    const thumbnail = template.cloneNode(true);
 
-  const images = thumbnail.querySelector('.picture__img');
-  images.src = photo.url;
-  images.alt = photo.description;
-  thumbnail.dataset.pictureId = photo.id;
+    const images = thumbnail.querySelector('.picture__img');
+    images.src = photo.url;
+    images.alt = photo.description;
+    thumbnail.dataset.pictureId = photo.id;
 
-  thumbnail.querySelector('.picture__likes').textContent = photo.likes;
-  thumbnail.querySelector('.picture__comments').textContent = photo.comments.length;
+    thumbnail.querySelector('.picture__likes').textContent = photo.likes;
+    thumbnail.querySelector('.picture__comments').textContent = photo.comments.length;
 
-  fragment.appendChild(thumbnail);
-});
+    fragment.appendChild(thumbnail);
+  });
 
-container.appendChild(fragment);
+  container.appendChild(fragment);
+};
+
+export { renderThumbnails };
