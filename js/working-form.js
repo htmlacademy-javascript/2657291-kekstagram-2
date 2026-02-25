@@ -60,36 +60,7 @@ const unblockSubmitButton = () => {
   buttonSendingElement.textContent = 'Опубликовать';
 };
 
-formSendingElement.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  if (validateForm()) {
-    blockSubmitButton();
-    const formData = new FormData(evt.target);
-
-    fetch('https://31.javascript.htmlacademy.pro/kekstagram', {
-      method: 'POST',
-      body: formData, // Передаем данные (экземпляр new FormData)
-    })
-      .then((response) => { // Выполнится, когда придет ответ от сервера
-        if (response.ok) {
-          closeUploadForm();
-          showMessage(successTemplateElement);
-          // Здесь будем закрывать форму и показывать окно "Success"
-        } else {                 // Если сервер ответил ошибкой
-          showMessage(errorTemplateElement);
-          // Здесь будем показывать окно "Error"
-        }
-      })
-      .catch(() => {
-        // Ошибка сети (интернет пропал)
-        showMessage(errorTemplateElement);
-      })
-      .finally(() => {           // Выполнится В ЛЮБОМ СЛУЧАЕ (и при успехе, и при ошибке)
-        unblockSubmitButton();   // Разблокируем кнопку обратно
-      });
-  }
-});
-
+//Универсальная функция для отрисоки и удаления сообщения об ошибке
 const showMessage = (messageElement) => {
   const clone = messageElement.cloneNode(true);
   document.body.append(clone);
@@ -116,6 +87,8 @@ const showMessage = (messageElement) => {
       closeMessage();
     }
   }
+
+  // ВАЖНО: true гарантирует, что мы поймаем нажатый Esc до того как закроестя форма, т.е. сперва закроется сообщение об ошибке, а потом форма
   document.addEventListener('keydown', onMessageEsc, true);
 
   // Закрытие по клику на произвольную область (вне самого окна)
@@ -126,5 +99,34 @@ const showMessage = (messageElement) => {
   }
   document.addEventListener('click', onOutsideClick);
 };
+
+formSendingElement.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+  if (validateForm()) {
+    blockSubmitButton();
+    const formData = new FormData(evt.target);
+
+    fetch('https://31.javascript.htmlacademy.pro/kekstagram', {
+      method: 'POST',
+      body: formData, // Передаем данные (экземпляр new FormData)
+    })
+      .then((response) => { // Выполнится, когда придет ответ от сервера
+        if (response.ok) { //ошибок нет
+          closeUploadForm(); //закроет форму редактирования изображения
+          showMessage(successTemplateElement); //покажет сообщение
+          // Здесь будем закрывать форму и показывать окно "Success"
+        } else { // Если сервер ответил ошибкой
+          showMessage(errorTemplateElement); // Здесь будем показывать окно "Error"
+        }
+      })
+      .catch(() => {
+        // Ошибка сети (интернет пропал)
+        showMessage(errorTemplateElement); //покажет сообщение об ошибке
+      })
+      .finally(() => { // Выполнится В ЛЮБОМ СЛУЧАЕ (и при успехе, и при ошибке)
+        unblockSubmitButton(); // Разблокируем кнопку обратно
+      });
+  }
+});
 
 export { closeUploadForm };
