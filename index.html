@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="vendor/nouislider/nouislider.css">
   <link rel="stylesheet" href="css/style.css">
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
   <title>Кекстаграм</title>
@@ -30,7 +31,7 @@
       <section class="img-upload">
         <div class="img-upload__wrapper">
           <h2 class="img-upload__title  visually-hidden">Загрузка фотографии</h2>
-          <form class="img-upload__form" id="upload-select-image" autocomplete="off">
+          <form class="img-upload__form" id="upload-select-image" autocomplete="off" action="https://31.javascript.htmlacademy.pro/kekstagram" method="post" enctype="multipart/form-data" name="uploading-new-image">
 
             <!-- Изначальное состояние поля для загрузки изображения -->
             <fieldset class="img-upload__start">
@@ -57,7 +58,7 @@
 
                   <!-- Изменение глубины эффекта, накладываемого на изображение -->
                   <fieldset class="img-upload__effect-level  effect-level">
-                    <input class="effect-level__value" type="number" step="any" name="effect-level" value="">
+                    <input class="effect-level__value" type="range" step="1" min='0' max='100' name="effect-level" value="">
                     <div class="effect-level__slider"></div>
                   </fieldset>
 
@@ -233,8 +234,9 @@
         <h2 class="data-error__title">Не удалось загрузить данные</h2>
       </section>
     </template>
+
+    <script src="/vendor/pristine/pristine.min.js"></script>
+    <script src="/vendor/nouislider/nouislider.js"></script>
     <script type="module" src="/js/main.js"></script>
-    <script type="module" src="/js/rendering-thumbnails.js"></script>
-    <script type="module" src="/js/rendering-full-size-image.js"></script>
 </body>
 </html>
