@@ -1,3 +1,5 @@
+import { EFFECTS } from './data.js';
+
 const scaleContainer = document.querySelector('.img-upload__scale'); //родительский контейнер
 const reduceImageElement = scaleContainer.querySelector('.scale__control--smaller'); //кнопка уменьшения изображения
 const enlargeImageElement = scaleContainer.querySelector('.scale__control--bigger'); //кнопка увеличения изображения
@@ -71,52 +73,6 @@ noUiSlider.create(effectSliderElement, {
     },
   }
 });
-
-const EFFECTS = {
-  chrome: {
-    filter: 'grayscale',
-    min: 0,
-    max: 1,
-    step: 0.1,
-    unit: ''
-  },
-
-  sepia: {
-    filter: 'sepia',
-    min: 0,
-    max: 1,
-    step: 0.1,
-    unit: ''
-  },
-
-  marvin: {
-    filter: 'invert',
-    min: 0,
-    max: 100,
-    step: 1,
-    unit: '%',
-  },
-
-  phobos: {
-    filter: 'blur',
-    min: 0,
-    max: 3,
-    step: 0.1,
-    unit: 'px',
-  },
-
-  heat: {
-    filter: 'brightness',
-    min: 1,
-    max: 3,
-    step: 0.1,
-    unit: '',
-  },
-
-  none: {
-    filter: 'none',
-  }
-};
 
 /*Функция передает значение из слайдера в CSS*/
 effectSliderElement.noUiSlider.on('update', () => {

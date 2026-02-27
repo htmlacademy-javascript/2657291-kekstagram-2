@@ -1,8 +1,10 @@
-const NewImageElementForm = document.querySelector('.img-upload__form');
-const hashtagInputElement = NewImageElementForm.querySelector('.text__hashtags');
-const commentInputElement = NewImageElementForm.querySelector('.text__description');
+const newImageElementForm = document.querySelector('.img-upload__form');
+const hashtagInputElement = newImageElementForm.querySelector('.text__hashtags');
+const commentInputElement = newImageElementForm.querySelector('.text__description');
+const MAX_HASHTAGS = 5;
+const MAX_COMMENT_LENGTH = 140;
 
-const pristine = new Pristine(NewImageElementForm, {
+const pristine = new Pristine(newImageElementForm, {
   classTo: 'img-upload__field-wrapper', // Элемент, на который будут добавляться классы
   errorClass: 'img-upload__field-wrapper--error', // Класс, обозначающий невалидное поле
   successClass: 'img-upload__field-wrapper--valid', // Класс, обозначающий валидное поле
@@ -27,7 +29,7 @@ const validateHashtagSymbols = (value) => {
 const validateHashtagLength = (value) => {
   const hashtagsLength = value.split(' ').filter((item) => item.length > 0);
 
-  return hashtagsLength.length <= 5;
+  return hashtagsLength.length <= MAX_HASHTAGS;
 };
 
 /* Функция проверяет на уникальность хештегов  */
@@ -45,7 +47,7 @@ const validateHashtagUnique = (value) => {
 
 /* Функция проверяет длинну комментария < 140 */
 const validateComment = (value) => {
-  if (value.length <= 140) {
+  if (value.length <= MAX_COMMENT_LENGTH) {
     return true;
   }
   return false;
@@ -58,7 +60,7 @@ pristine.addValidator(hashtagInputElement, validateHashtagUnique, 'Хэштег�
 
 pristine.addValidator(commentInputElement, validateComment, 'Длина комментария не может быть больше 140 символов !');
 
-NewImageElementForm.addEventListener('submit', (evt) => {
+newImageElementForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
   pristine.validate();
 });
