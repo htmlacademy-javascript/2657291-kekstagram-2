@@ -1,6 +1,7 @@
 const template = document.querySelector('#picture').content.querySelector('.picture');
 const container = document.querySelector('.pictures');
 
+//Функция создания фотографий
 const renderThumbnails = (photos) => {
   const fragment = document.createDocumentFragment();
 

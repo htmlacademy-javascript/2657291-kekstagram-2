@@ -20,4 +20,13 @@ const getUniqueRandomNumbers = (count, minValue, maxValue) => {
 //Функция для выбора случайного элемента из массива
 const getRandomArrayElement = (array) => array[getRandomInteger(0, array.length - 1)];
 
-export {getRandomInteger, getUniqueRandomNumbers, getRandomArrayElement};
+//Функция не дает перерисоввать фотографии слишком быстро, обнуляет таймер перерисовки
+const debounce = (callback, timeoutDelay = 500) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
+
+export {getRandomInteger, getUniqueRandomNumbers, getRandomArrayElement, debounce};
