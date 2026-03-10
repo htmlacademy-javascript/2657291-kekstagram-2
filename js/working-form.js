@@ -1,5 +1,6 @@
 import { resetValidation, validateForm } from './validation.js';
 import { resetScale, resetEffects } from './image-editing.js';
+import { sendData } from './module-working-server.js';
 
 const valuesUploadInputElement = document.querySelector('.img-upload__input'); //Изначальное состояние поля для загрузки изображения
 const uploadOverlayElement = document.querySelector('.img-upload__overlay'); //div Форма редактирования изображения
@@ -104,12 +105,10 @@ formSendingElement.addEventListener('submit', (evt) => {
   evt.preventDefault();
   if (validateForm()) {
     blockSubmitButton();
+
     const formData = new FormData(evt.target);
 
-    fetch('https://31.javascript.htmlacademy.pro/kekstagram', {
-      method: 'POST',
-      body: formData, // Передаем данные (экземпляр new FormData)
-    })
+    sendData(formData)
       .then((response) => { // Выполнится, когда придет ответ от сервера
         if (response.ok) { //ошибок нет
           closeUploadForm(); //закроет форму редактирования изображения
@@ -120,7 +119,7 @@ formSendingElement.addEventListener('submit', (evt) => {
         }
       })
       .catch(() => {
-        // Ошибка сети (интернет пропал)
+      // Ошибка сети (интернет пропал)
         showMessage(errorTemplateElement); //покажет сообщение об ошибке
       })
       .finally(() => { // Выполнится В ЛЮБОМ СЛУЧАЕ (и при успехе, и при ошибке)
