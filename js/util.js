@@ -1,32 +1,23 @@
-//Функция для генерации случайного числа из диапазона
-const getRandomInteger = (minValue, maxValue) => {
-  const lower = Math.ceil(Math.min(minValue, maxValue));
-  const upper = Math.floor(Math.max(minValue, maxValue));
-  const result = Math.random() * (upper - lower + 1) + lower;
-  return Math.floor(result);
+const REMOVE_MESSAGE_TIMEOUT = 5000;
+
+const errorTemplateElement = document.querySelector('#data-error').content.querySelector('.data-error');
+const body = document.body;
+
+// Функция показа ошибки загрузки
+export const showDataError = () => {
+  const errorElement = errorTemplateElement.cloneNode(true);
+  body.append(errorElement);
+
+  setTimeout(() => {
+    errorElement.remove();
+  }, REMOVE_MESSAGE_TIMEOUT);
 };
-
-//Функция сщздания массива уникальных чисел
-const getUniqueRandomNumbers = (count, minValue, maxValue) => {
-  const uniqueNumbers = new Set();
-
-  while (uniqueNumbers.size < count) {
-    uniqueNumbers.add(getRandomInteger(minValue, maxValue));
-  }
-
-  return Array.from(uniqueNumbers);
-};
-
-//Функция для выбора случайного элемента из массива
-const getRandomArrayElement = (array) => array[getRandomInteger(0, array.length - 1)];
 
 //Функция не дает перерисоввать фотографии слишком быстро, обнуляет таймер перерисовки
-const debounce = (callback, timeoutDelay = 500) => {
+export const debounce = (callback, timeoutDelay = 500) => {
   let timeoutId;
   return (...rest) => {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
   };
 };
-
-export {getRandomInteger, getUniqueRandomNumbers, getRandomArrayElement, debounce};
