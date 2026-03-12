@@ -1,6 +1,6 @@
 import { resetValidation, validateForm } from './validation.js';
 import { resetScale, resetEffects } from './image-editing.js';
-import { sendData } from './module-working-server.js';
+import { sendData } from './server.js';
 
 const valuesUploadInputElement = document.querySelector('.img-upload__input'); //Изначальное состояние поля для загрузки изображения
 const uploadOverlayElement = document.querySelector('.img-upload__overlay'); //div Форма редактирования изображения
