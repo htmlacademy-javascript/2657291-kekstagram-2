@@ -1,5 +1,10 @@
 import { EFFECTS } from './data.js';
 
+const SCALE_STEP = 25;
+const MIN_SCALE = 25;
+const MAX_SCALE = 100;
+const DEFAULT_SCALE = 100;
+
 const scaleContainer = document.querySelector('.img-upload__scale'); //родительский контейнер
 const reduceImageElement = scaleContainer.querySelector('.scale__control--smaller'); //кнопка уменьшения изображения
 const enlargeImageElement = scaleContainer.querySelector('.scale__control--bigger'); //кнопка увеличения изображения
@@ -12,11 +17,6 @@ const effectSliderElement = document.querySelector('.effect-level__slider'); //d
 const effectParentElement = document.querySelector('.img-upload__effect-level'); //блок-родитель выбранного эффекта
 const effectListElement = document.querySelector('.effects__list'); //ul c эффектами
 let currentEffect = 'none';
-
-const SCALE_STEP = 25;
-const MIN_SCALE = 25;
-const MAX_SCALE = 100;
-const DEFAULT_SCALE = 100;
 
 //Функция уменьшения изображения
 reduceImageElement.addEventListener('click', () => {

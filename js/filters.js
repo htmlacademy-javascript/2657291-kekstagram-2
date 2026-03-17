@@ -2,6 +2,7 @@ import { renderThumbnails } from './rendering-thumbnails.js';
 import { debounce } from './util.js';
 
 const RANDOM_PHOTOS_COUNT = 10;
+const TIMEOUT_DELAY = 500;
 
 const imgFormElement = document.querySelector('.img-filters__form');
 const filterElement = document.querySelector('.img-filters');
@@ -28,7 +29,7 @@ const debouncedRenderThumbnails = debounce((filterId) => {
   // Получаем отфильтрованный массив и рисуем его
   const filteredPhotos = getFilteredPhotos(localPhotos, filterId);
   renderThumbnails(filteredPhotos);
-}, 500);
+}, TIMEOUT_DELAY);
 
 //Функция передает в main id
 imgFormElement.addEventListener('click', (evt) => {
@@ -52,27 +53,3 @@ export const initFilters = (pictures) => {
 };
 
 export { getFilteredPhotos };
-
-/* ---------   ДЗ 12 ------------------*/
-const FILE_TYPES = ['jpg', 'jpeg', 'png'];
-const uploadFileElement = document.querySelector('.img-upload__input');
-const imgUploadPreview = document.querySelector('.img-upload__preview img');
-const effectsPreviewElements = document.querySelectorAll('.effects__preview');
-
-uploadFileElement.addEventListener('change', () => {
-  const file = uploadFileElement.files[0];
-  const fileName = file.name.toLowerCase();
-
-  const matches = FILE_TYPES.some((element) => fileName.endsWith(element));
-  if (matches) {
-    const url = URL.createObjectURL(file);
-
-    //Подставляем в главное окно
-    imgUploadPreview.src = url;
-
-    //Подставляем во все иконки фильтров через цикл
-    effectsPreviewElements.forEach((element) => {
-      element.style.backgroundImage = `url(${url})`;
-    });
-  }
-});

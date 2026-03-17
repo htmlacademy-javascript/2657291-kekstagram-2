@@ -1,3 +1,5 @@
+const COMMENTS_STEP = 5;
+
 const bigPictureElement = document.querySelector('.big-picture'); //section родитель Полноэкранный показ изображения
 const bigPictureImgElement = document.querySelector('.big-picture__img img'); //img изображение
 const likesCountElement = bigPictureElement.querySelector('.likes-count'); //span с кол-ом лайков
@@ -13,7 +15,6 @@ const picturesContainerElement = document.querySelector('.pictures'); //Конт
 
 let shownCommentsCount = 0;
 let currentComments = [];
-const COMMENTS_STEP = 5;
 
 //функция создания элемента с коментарием
 const createCommentElement = (commentObject) => {
