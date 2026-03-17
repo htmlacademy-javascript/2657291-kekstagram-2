@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм»
 
 * Студент: [Александр Волков](https://up.htmlacademy.ru/javascript-individual/2/user/2657291).
-* Наставник: [Амина Омарова]
+* Наставник: [Виктория Никитина](https://htmlacademy.ru/profile/id1217273)
 
 ---
 
