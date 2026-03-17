@@ -6,9 +6,11 @@ import { renderThumbnails } from './rendering-thumbnails.js';
 //Импортируем отрисовку большого фото
 import { initBigPicture } from './rendering-full-size-image.js';
 
-// Подключаем модули формы и редактирования, чтобы сработали их обработчики
 import './form.js';
 import './image-editing.js';
+
+import { initUploadImagePreview } from './upload-image.js';
+initUploadImagePreview();
 
 //Функция сброса таймера отрисоки фото
 import { showDataError } from './util.js';
