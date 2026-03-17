@@ -3,20 +3,22 @@ const uploadFileElement = document.querySelector('.img-upload__input');
 const imgUploadPreview = document.querySelector('.img-upload__preview img');
 const effectsPreviewElements = document.querySelectorAll('.effects__preview');
 
-uploadFileElement.addEventListener('change', () => {
-  const file = uploadFileElement.files[0];
-  const fileName = file.name.toLowerCase();
+export const initUploadImagePreview = () => {
+  uploadFileElement.addEventListener('change', () => {
+    const file = uploadFileElement.files[0];
+    const fileName = file.name.toLowerCase();
 
-  const matches = FILE_TYPES.some((element) => fileName.endsWith(element));
-  if (matches) {
-    const url = URL.createObjectURL(file);
+    const matches = FILE_TYPES.some((element) => fileName.endsWith(element));
+    if (matches) {
+      const url = URL.createObjectURL(file);
 
-    //Подставляем в главное окно
-    imgUploadPreview.src = url;
+      //Подставляем в главное окно
+      imgUploadPreview.src = url;
 
-    //Подставляем во все иконки фильтров через цикл
-    effectsPreviewElements.forEach((element) => {
-      element.style.backgroundImage = `url(${url})`;
-    });
-  }
-});
+      //Подставляем во все иконки фильтров через цикл
+      effectsPreviewElements.forEach((element) => {
+        element.style.backgroundImage = `url(${url})`;
+      });
+    }
+  });
+};
