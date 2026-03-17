@@ -12,10 +12,8 @@ export const initUploadImagePreview = () => {
     if (matches) {
       const url = URL.createObjectURL(file);
 
-      //Подставляем в главное окно
       imgUploadPreview.src = url;
 
-      //Подставляем во все иконки фильтров через цикл
       effectsPreviewElements.forEach((element) => {
         element.style.backgroundImage = `url(${url})`;
       });
