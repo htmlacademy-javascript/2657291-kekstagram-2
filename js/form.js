@@ -11,7 +11,7 @@ const buttonSendingElement = document.querySelector('.img-upload__submit');
 const successTemplateElement = document.querySelector('#success').content.querySelector('.success');
 const errorTemplateElement = document.querySelector('#error').content.querySelector('.error');
 
-const sabmitTexsts = {
+const SubmitTexts = {
   IDLE: 'Опубликовать',
   SENDING: 'Публикую...'
 };
@@ -53,7 +53,7 @@ buttonUploadCancelElement.addEventListener('click', () => {
 
 const blockSubmitButton = (isBlocked = true) => {
   buttonSendingElement.disabled = isBlocked;
-  buttonSendingElement.textContent = isBlocked ? sabmitTexsts.SENDING : sabmitTexsts.IDLE;
+  buttonSendingElement.textContent = isBlocked ? SubmitTexts.SENDING : SubmitTexts.IDLE;
 };
 
 const showMessage = (messageElement) => {
