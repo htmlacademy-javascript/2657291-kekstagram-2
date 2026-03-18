@@ -2,11 +2,9 @@ const template = document.querySelector('#picture').content.querySelector('.pict
 const container = document.querySelector('.pictures');
 
 const clear = () => {
-  // Сначала удаляем все старые миниатюры (чтобы не дублировались)
   document.querySelectorAll('.picture').forEach((pic) => pic.remove());
 };
 
-//Функция создания фотографий
 const renderThumbnails = (photos) => {
   const fragment = document.createDocumentFragment();
   clear();

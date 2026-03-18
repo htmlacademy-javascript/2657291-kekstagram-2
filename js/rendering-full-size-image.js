@@ -1,21 +1,21 @@
-const bigPictureElement = document.querySelector('.big-picture'); //section родитель Полноэкранный показ изображения
-const bigPictureImgElement = document.querySelector('.big-picture__img img'); //img изображение
-const likesCountElement = bigPictureElement.querySelector('.likes-count'); //span с кол-ом лайков
-const commentsTotalCountElement = bigPictureElement.querySelector('.social__comment-total-count'); //span общее кол-во коментариев
-const commentsShownCountElement = bigPictureElement.querySelector('.social__comment-shown-count'); //span первое кол-во комент. 5 из ...
-const socialCommentsElement = bigPictureElement.querySelector('.social__comments'); //контейнер ul > li > фото и коментарий.
+const COMMENTS_STEP = 5;
 
-const socialCaptionElement = bigPictureElement.querySelector('.social__caption'); //подпись к изображению
-const commentCountBlockElement = bigPictureElement.querySelector('.social__comment-count'); //div родитель с инф-ей 5 из 10 коментариев
-const commentsLoaderElement = bigPictureElement.querySelector('.comments-loader'); //button Загрузить еще
-const closeButtonElement = bigPictureElement.querySelector('.big-picture__cancel'); //Крестик - Закрыть
-const picturesContainerElement = document.querySelector('.pictures'); //Контейнер с миниатюрами (Контейнер для изображений от других пользователей)
+const bigPictureElement = document.querySelector('.big-picture');
+const bigPictureImgElement = document.querySelector('.big-picture__img img');
+const likesCountElement = bigPictureElement.querySelector('.likes-count');
+const commentsTotalCountElement = bigPictureElement.querySelector('.social__comment-total-count');
+const commentsShownCountElement = bigPictureElement.querySelector('.social__comment-shown-count');
+const socialCommentsElement = bigPictureElement.querySelector('.social__comments');
+
+const socialCaptionElement = bigPictureElement.querySelector('.social__caption');
+const commentCountBlockElement = bigPictureElement.querySelector('.social__comment-count');
+const commentsLoaderElement = bigPictureElement.querySelector('.comments-loader');
+const closeButtonElement = bigPictureElement.querySelector('.big-picture__cancel');
+const picturesContainerElement = document.querySelector('.pictures');
 
 let shownCommentsCount = 0;
 let currentComments = [];
-const COMMENTS_STEP = 5;
 
-//функция создания элемента с коментарием
 const createCommentElement = (commentObject) => {
   const itemCommentList = document.createElement('li');
   itemCommentList.classList.add('social__comment');
@@ -52,20 +52,17 @@ function onDocumentKeydown (evt) {
   }
 }
 
-//Функция отрисовки комментариев по 5 шт
 const renderNextComments = () => {
   const result = currentComments.slice(shownCommentsCount, shownCommentsCount + COMMENTS_STEP);
   const fragment = document.createDocumentFragment();
 
-  //Создаем элементы и кладем в "ящик"
   result.forEach((item) => {
-    const commentElement = createCommentElement(item); //Функция создает элемент с коментарием
+    const commentElement = createCommentElement(item);
     fragment.append(commentElement);
   });
 
   socialCommentsElement.append(fragment);
 
-  //Обновляем счетчик на реальное количество добавленных
   shownCommentsCount += result.length;
   commentsShownCountElement.textContent = shownCommentsCount;
 
@@ -76,7 +73,6 @@ const renderNextComments = () => {
   }
 };
 
-//Функция открытия большого фото
 const openBigPicture = (photoObject) => {
   bigPictureElement.classList.remove('hidden');
   document.body.classList.add('modal-open');
@@ -86,10 +82,9 @@ const openBigPicture = (photoObject) => {
   socialCaptionElement.textContent = photoObject.description;
   commentsTotalCountElement.textContent = photoObject.comments.length;
 
-  //  Задание 8.2 НАЧИНАЕТСЯ ТУТ ---
   socialCommentsElement.innerHTML = '';
-  currentComments = photoObject.comments; // Запоминаем все комменты этого фото
-  shownCommentsCount = 0; // Сбрасываем счетчик
+  currentComments = photoObject.comments;
+  shownCommentsCount = 0;
 
   commentCountBlockElement.classList.remove('hidden');
   commentsLoaderElement.classList.remove('hidden');
@@ -99,7 +94,6 @@ const openBigPicture = (photoObject) => {
   document.addEventListener('keydown', onDocumentKeydown);
 };
 
-//Функция прослушки при клике запускает функции отрисовки
 const initBigPicture = (data) => {
   picturesContainerElement.addEventListener('click', (evt) => {
     const thumbnailElement = evt.target.closest('.picture');
@@ -111,7 +105,6 @@ const initBigPicture = (data) => {
 
     const pictureId = Number(thumbnailElement.dataset.pictureId);
 
-    // Ищем фото именно в тех данных, которые пришли из main.js
     const currentPhoto = data.find((item) => item.id === pictureId);
 
     if (currentPhoto) {

@@ -1,58 +1,49 @@
 import { EFFECTS } from './data.js';
 
-const scaleContainer = document.querySelector('.img-upload__scale'); //родительский контейнер
-const reduceImageElement = scaleContainer.querySelector('.scale__control--smaller'); //кнопка уменьшения изображения
-const enlargeImageElement = scaleContainer.querySelector('.scale__control--bigger'); //кнопка увеличения изображения
-const inputImageElement = scaleContainer.querySelector('.scale__control--value'); //input
-const viewingImageElement = document.querySelector('.img-upload__preview img'); //предварительный просмотр изображения img
-
-const inputChangingEffectElement = document.querySelector('.effect-level__value'); //input Изменение глубины эффекта, накладываемого на изображение
-const effectSliderElement = document.querySelector('.effect-level__slider'); //div где отображается ползунок слайдера
-
-const effectParentElement = document.querySelector('.img-upload__effect-level'); //блок-родитель выбранного эффекта
-const effectListElement = document.querySelector('.effects__list'); //ul c эффектами
-let currentEffect = 'none';
-
 const SCALE_STEP = 25;
 const MIN_SCALE = 25;
 const MAX_SCALE = 100;
 const DEFAULT_SCALE = 100;
 
-//Функция уменьшения изображения
-reduceImageElement.addEventListener('click', () => {
-  const currentValue = inputImageElement.value; //текущее значение input
-  let currentNumber = parseInt(currentValue, 10); //приводим это значение к числу
+const scaleContainer = document.querySelector('.img-upload__scale');
+const reduceImageElement = scaleContainer.querySelector('.scale__control--smaller');
+const enlargeImageElement = scaleContainer.querySelector('.scale__control--bigger');
+const inputImageElement = scaleContainer.querySelector('.scale__control--value');
+const viewingImageElement = document.querySelector('.img-upload__preview img');
 
-  // Проверяем и уменьшаем
+const inputChangingEffectElement = document.querySelector('.effect-level__value');
+const effectSliderElement = document.querySelector('.effect-level__slider');
+
+const effectParentElement = document.querySelector('.img-upload__effect-level');
+const effectListElement = document.querySelector('.effects__list');
+let currentEffect = 'none';
+
+reduceImageElement.addEventListener('click', () => {
+  const currentValue = inputImageElement.value;
+  let currentNumber = parseInt(currentValue, 10);
+
   if (currentNumber > MIN_SCALE) {
     currentNumber = currentNumber - SCALE_STEP;
 
-    // ОБНОВЛЯЕМ сам input (важно!)
     inputImageElement.value = `${currentNumber }%`;
 
-    // Меняем размер изображения
     viewingImageElement.style.transform = `scale(${currentNumber / 100})`;
   }
 });
 
-//Функция увеличения изображения
 enlargeImageElement.addEventListener('click', () => {
-  const currentValue = inputImageElement.value; //текущее значение input
-  let currentNumber = parseInt(currentValue, 10); //приводим это значение к числу
+  const currentValue = inputImageElement.value;
+  let currentNumber = parseInt(currentValue, 10);
 
-  // Проверяем и уменьшаем
   if (currentNumber < MAX_SCALE) {
     currentNumber += SCALE_STEP;
 
-    // ОБНОВЛЯЕМ сам input (важно!)
     inputImageElement.value = `${currentNumber }%`;
 
-    // Меняем размер изображения
     viewingImageElement.style.transform = `scale(${currentNumber / 100})`;
   }
 });
 
-/* Изменение глубины эффекта, накладываемого на изображение */
 noUiSlider.create(effectSliderElement, {
   range: {
     min: 0,
@@ -74,23 +65,21 @@ noUiSlider.create(effectSliderElement, {
   }
 });
 
-/*Функция передает значение из слайдера в CSS*/
 effectSliderElement.noUiSlider.on('update', () => {
-  const currentValue = effectSliderElement.noUiSlider.get(); //получаем число из слайдера
-  inputChangingEffectElement.value = currentValue; //записали значение в input полученное из слайдера
+  const currentValue = effectSliderElement.noUiSlider.get();
+  inputChangingEffectElement.value = currentValue;
 
   const config = EFFECTS[currentEffect];
 
   if (currentEffect === 'none' || currentEffect === 'original') {
     viewingImageElement.style.filter = 'none';
-    effectParentElement.classList.add('hidden'); // Скрываем слайдер
+    effectParentElement.classList.add('hidden');
   } else {
     effectParentElement.classList.remove('hidden');
     viewingImageElement.style.filter = `${config.filter}(${currentValue}${config.unit})`;
   }
 });
 
-/* Прослушиватель переключения */
 effectListElement.addEventListener('change', (evt) => {
   currentEffect = evt.target.value;
   const config = EFFECTS[currentEffect];
@@ -106,29 +95,21 @@ effectListElement.addEventListener('change', (evt) => {
         min: config.min,
         max: config.max,
       },
-      start: config.max, // По ТЗ начинаем всегда с максимума (100%)
+      start: config.max,
       step: config.step,
     });
   }
 });
 
-// Функция сброса масштаба
 const resetScale = () => {
   inputImageElement.value = `${DEFAULT_SCALE}%`;
   viewingImageElement.style.transform = `scale(${DEFAULT_SCALE / 100})`;
 };
 
-// Функция сброса эффектов (понадобится при закрытии)
 const resetEffects = () => {
   currentEffect = 'none';
   viewingImageElement.style.filter = 'none';
   effectParentElement.classList.add('hidden');
 };
 
-// Экспортируем функции, чтобы они стали видны в других файлах
 export { resetScale, resetEffects };
-
-//effectSliderElement.noUiSlider.destroy();   удаляет слайдер
-//effectSliderElement.setAttribute('disabled', true); Блокирует слайдер
-// sliderElement.removeAttribute('disabled');    разблокирует
-
