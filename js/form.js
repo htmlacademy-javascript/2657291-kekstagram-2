@@ -1,5 +1,6 @@
 import { resetValidation, validateForm } from './validation.js';
-import { resetScale, resetEffects } from './image-editing.js';
+import { resetEffects } from './image-editing.js';
+import { resetScale } from './scale.js';
 import { sendData } from './server.js';
 
 const valuesUploadInputElement = document.querySelector('.img-upload__input');
@@ -9,6 +10,11 @@ const formSendingElement = document.querySelector('.img-upload__form');
 const buttonSendingElement = document.querySelector('.img-upload__submit');
 const successTemplateElement = document.querySelector('#success').content.querySelector('.success');
 const errorTemplateElement = document.querySelector('#error').content.querySelector('.error');
+
+const sabmitTexsts = {
+  IDLE: 'Опубликовать',
+  SENDING: 'Публикую...'
+};
 
 const closeUploadForm = () => {
   uploadOverlayElement.classList.add('hidden');
@@ -45,14 +51,9 @@ buttonUploadCancelElement.addEventListener('click', () => {
   closeUploadForm();
 });
 
-const blockSubmitButton = () => {
-  buttonSendingElement.disabled = true;
-  buttonSendingElement.textContent = 'Публикую...';
-};
-
-const unblockSubmitButton = () => {
-  buttonSendingElement.disabled = false;
-  buttonSendingElement.textContent = 'Опубликовать';
+const blockSubmitButton = (isBlocked = true) => {
+  buttonSendingElement.disabled = isBlocked;
+  buttonSendingElement.textContent = isBlocked ? sabmitTexsts.SENDING : sabmitTexsts.IDLE;
 };
 
 const showMessage = (messageElement) => {
@@ -96,18 +97,17 @@ formSendingElement.addEventListener('submit', (evt) => {
 
     sendData(formData)
       .then((response) => {
-        if (response.ok) {
-          closeUploadForm();
-          showMessage(successTemplateElement);
-        } else {
-          showMessage(errorTemplateElement);
+        if (!response.ok) {
+          throw new Error();
         }
+        closeUploadForm();
+        showMessage(successTemplateElement);
+      })
+      .finally(() => {
+        blockSubmitButton(false);
       })
       .catch(() => {
         showMessage(errorTemplateElement);
-      })
-      .finally(() => {
-        unblockSubmitButton();
       });
   }
 });
