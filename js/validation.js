@@ -36,10 +36,7 @@ const validateHashtagUnique = (value) => {
 
   const hashtagsUnique = new Set(newHashtags);
 
-  if (hashtags.length === hashtagsUnique.size) {
-    return true;
-  }
-  return false;
+  return hashtags.length === hashtagsUnique.size;
 };
 
 const validateComment = (value) => value.length <= MAX_COMMENT_LENGTH;
