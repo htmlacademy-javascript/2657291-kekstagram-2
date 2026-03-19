@@ -38,7 +38,7 @@ const createCommentElement = (commentObject) => {
   return itemCommentList;
 };
 
-const closeBigPicture = () => {
+const onBigPictureCancelClick = () => {
   bigPictureElement.classList.add('hidden');
   document.body.classList.remove('modal-open');
 
@@ -48,11 +48,11 @@ const closeBigPicture = () => {
 function onDocumentKeydown (evt) {
   if (evt.key === 'Escape') {
     evt.preventDefault();
-    closeBigPicture();
+    onBigPictureCancelClick();
   }
 }
 
-const renderNextComments = () => {
+const onCommentsLoaderClick = () => {
   const result = currentComments.slice(shownCommentsCount, shownCommentsCount + COMMENTS_STEP);
   const fragment = document.createDocumentFragment();
 
@@ -89,7 +89,7 @@ const openBigPicture = (photoObject) => {
   commentCountBlockElement.classList.remove('hidden');
   commentsLoaderElement.classList.remove('hidden');
 
-  renderNextComments();
+  onCommentsLoaderClick ();
 
   document.addEventListener('keydown', onDocumentKeydown);
 };
@@ -112,8 +112,8 @@ const initBigPicture = (data) => {
     }
   });
 
-  closeButtonElement.addEventListener('click', closeBigPicture);
-  commentsLoaderElement.addEventListener('click', renderNextComments);
+  closeButtonElement.addEventListener('click', onBigPictureCancelClick);
+  commentsLoaderElement.addEventListener('click', onCommentsLoaderClick );
 };
 
 export { initBigPicture };

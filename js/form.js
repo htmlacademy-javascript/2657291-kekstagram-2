@@ -19,7 +19,8 @@ const SubmitTexts = {
 const closeUploadForm = () => {
   uploadOverlayElement.classList.add('hidden');
   document.body.classList.remove('modal-open');
-  valuesUploadInputElement.value = '';
+
+  formSendingElement.reset();
 
   resetScale();
   resetEffects();
@@ -62,19 +63,19 @@ const showMessage = (messageElement) => {
 
   const closeButton = clone.querySelector('button');
 
-  const closeMessage = () => {
+  const onCloseButtonClick = () => {
     clone.remove();
     document.removeEventListener('keydown', onMessageEsc, true);
     document.removeEventListener('click', onOutsideClick);
   };
 
-  closeButton.addEventListener('click', closeMessage);
+  closeButton.addEventListener('click', onCloseButtonClick);
 
   function onMessageEsc(evt) {
     if (evt.key === 'Escape') {
       evt.preventDefault();
       evt.stopPropagation();
-      closeMessage();
+      onCloseButtonClick();
     }
   }
 
@@ -82,7 +83,7 @@ const showMessage = (messageElement) => {
 
   function onOutsideClick(evt) {
     if (evt.target === clone) {
-      closeMessage();
+      onCloseButtonClick();
     }
   }
   document.addEventListener('click', onOutsideClick);
